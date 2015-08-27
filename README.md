@@ -1,3 +1,3 @@
 # equipment
 
-Handle equipment.yaml files for describing network layout
+Handle equipment identification and status checking
