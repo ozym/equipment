@@ -14,11 +14,9 @@ import (
 
 var (
 	verbose bool
-
-	room  string
-	token string
-
-	base string
+	room    string
+	token   string
+	base    string
 )
 
 func chat(msg, colour string, notify bool) error {
@@ -57,11 +55,15 @@ func store(d dmc.Device, s *dmc.State) error {
 		return nil
 	}
 
-	if err := os.MkdirAll(base+"/"+p[len(p)-1], 0755); err != nil {
+	// per site directory
+	b := base + "/" + p[len(p)-1]
+	if err := os.MkdirAll(b, 0755); err != nil {
 		return err
 	}
 
-	file, err := os.OpenFile(base+"/"+p[len(p)-1]+"/"+n[0]+".json", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	// output file name
+	f := b + "/" + n[0] + ".json"
+	file, err := os.OpenFile(f, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
@@ -97,13 +99,19 @@ func notify(d dmc.Device, s *dmc.State) (bool, error) {
 
 	// outgoing message ...
 	items := []interface{}{d.Model, n[0], d.IP.String(), s.Values["model"].(string)}
+	parts := []string{
+		"---{{{... %s ...}}}---",
+		"<b><em>%s</em></b> [%s]",
+		"has been identified to be a",
+		"<b>%s</b>",
+	}
 
 	if verbose {
 		log.Printf("[%s] %s [%s] has been identified to be a %s\n", items...)
 	}
 
 	// hipchat ...
-	msg := fmt.Sprintf("---{{{... %s ...}}}---<br/><b><em>%s</em></b> [%s]<br/>has been identified to be a<br/><b>%s</b>", items...)
+	msg := fmt.Sprintf(strings.Join(parts, "<br/>"), items...)
 	if err := chat(msg, "red", true); err != nil {
 		return true, err
 	}
@@ -126,18 +134,13 @@ func device(d dmc.Device, s *dmc.State) bool {
 	return ok
 }
 
-func init() {
-	room = os.Getenv("HIPCHAT_ROOM_NAME")
-	token = os.Getenv("HIPCHAT_ROOM_TOKEN")
-}
-
 func main() {
 
 	flag.BoolVar(&verbose, "verbose", false, "make noise")
-	flag.StringVar(&base, "base", ".", "base storage directory")
+	flag.StringVar(&base, "base", ".", "base status storage directory")
 
-	flag.StringVar(&room, "room", room, "hipchat room name")
-	flag.StringVar(&token, "token", token, "hipchat room token")
+	flag.StringVar(&room, "room", os.Getenv("HIPCHAT_ROOM_NAME"), "hipchat room name")
+	flag.StringVar(&token, "token", os.Getenv("HIPCHAT_ROOM_TOKEN"), "hipchat room token")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "\n")
