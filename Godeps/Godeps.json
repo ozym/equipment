@@ -33,6 +33,10 @@
 			"Rev": "98995c0f0ffa1bdd5d3c48e1a8532352a6a210c6"
 		},
 		{
+			"ImportPath": "github.com/paulstuart/ping",
+			"Rev": "0345a9703e43995c48c1749fda54272132d57324"
+		},
+		{
 			"ImportPath": "github.com/soniah/gosnmp",
 			"Comment": "v1.9-memory-24-geffa930",
 			"Rev": "effa930c87bcdfc1f528f1fea557ad3b9210ab78"
