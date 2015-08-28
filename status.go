@@ -9,6 +9,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/paulstuart/ping"
+
 	"github.com/ozym/dmc"
 	"github.com/ozym/zone"
 )
@@ -91,21 +93,27 @@ func status(args []string) {
 			Model: l.Model,
 		}
 
-		if verbose {
-			log.Printf("checking equipment: %s\n", d.String())
-		}
+		// wait ...
+		sem <- struct{}{}
+		wg.Add(1)
 
-		for _, m := range dmc.ModelList {
-			if !d.Match(m) {
-				continue
+		go func(d dmc.Device) {
+			defer func() { <-sem; wg.Done() }()
+
+			if ok := ping.Ping(d.IP.String(), (int)(timeout/time.Second)); !ok {
+				if verbose {
+					log.Printf("skipping: %s\n", d.String())
+				}
+				return
+			}
+			if verbose {
+				log.Printf("discover!: %s\n", d.String())
 			}
 
-			// wait ...
-			sem <- struct{}{}
-			wg.Add(1)
-
-			go func(m dmc.Model, d dmc.Device) {
-				defer func() { <-sem; wg.Done() }()
+			for _, m := range dmc.ModelList {
+				if !d.Match(m) {
+					continue
+				}
 
 				if verbose {
 					log.Printf("checking: %s against %s\n", d.String(), m.Name())
@@ -125,8 +133,8 @@ func status(args []string) {
 				if verbose {
 					log.Printf("missed equipment: %s\n", d.String())
 				}
-			}(m, d)
-		}
+			}
+		}(d)
 	}
 
 	wg.Wait()

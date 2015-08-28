@@ -1,14 +1,15 @@
 package main
 
 import (
-	"sync"
-
 	"flag"
 	"fmt"
 	"log"
 	"os"
 	"strings"
+	"sync"
 	"time"
+
+	"github.com/paulstuart/ping"
 
 	"github.com/ozym/dmc"
 	"github.com/ozym/zone"
@@ -87,32 +88,42 @@ func check(args []string) {
 			log.Printf("checking: %s\n", d.String())
 		}
 
-		for _, m := range dmc.ModelList {
+		// wait ...
+		sem <- struct{}{}
+		wg.Add(1)
 
-			// wait ...
-			sem <- struct{}{}
-			wg.Add(1)
+		go func(d dmc.Device) {
+			defer func() { <-sem; wg.Done() }()
 
-			go func(m dmc.Model, d dmc.Device) {
-				defer func() { <-sem; wg.Done() }()
+			if ok := ping.Ping(d.IP.String(), (int)(timeout/time.Second)); !ok {
+				if verbose {
+					log.Printf("skipping: %s\n", d.String())
+				}
+				return
+			}
+			if verbose {
+				log.Printf("discover!: %s\n", d.String())
+			}
+
+			for _, m := range dmc.ModelList {
 
 				if verbose {
-					log.Println(d)
+					log.Printf("\tcheck against: %s\n", m.Name())
 				}
 
-				if s, _ := d.Identify(m, model, timeout, retries); s != nil {
+				if s, _ := d.Identify(m, d.Model, timeout, retries); s != nil {
 					if device(d, s) {
 						return
 					}
 				}
 
-				if s := d.Discover(m, model, timeout, retries); s != nil {
+				if s := d.Discover(m, d.Model, timeout, retries); s != nil {
 					if device(d, s) {
 						return
 					}
 				}
-			}(m, d)
-		}
+			}
+		}(d)
 	}
 
 	wg.Wait()
