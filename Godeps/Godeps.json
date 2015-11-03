@@ -1,0 +1,63 @@
+{
+	"ImportPath": "github.com/ozym/equipment",
+	"GoVersion": "go1.5.1",
+	"Deps": [
+		{
+			"ImportPath": "code.google.com/p/mlab-ns2/gae/ns/digest",
+			"Comment": "null-26",
+			"Rev": "eeb6dd938e6570c3038d5cc5ecff0a3e9dfae378"
+		},
+		{
+			"ImportPath": "github.com/PuerkitoBio/goquery",
+			"Comment": "v0.3.2-80-g417cce8",
+			"Rev": "417cce822c7b9a379df5824be95228d177c5698b"
+		},
+		{
+			"ImportPath": "github.com/andybalholm/cascadia",
+			"Rev": "3ad29d1ad1c4f2023e355603324348cf1f4b2d48"
+		},
+		{
+			"ImportPath": "github.com/hashicorp/consul/api",
+			"Comment": "v0.5.2-269-g80d26f9",
+			"Rev": "80d26f91568da2024ab734d50d5d0e85bc0f2147"
+		},
+		{
+			"ImportPath": "github.com/miekg/dns",
+			"Rev": "e59f851c912767b1db587dcabee6e6652e495c75"
+		},
+		{
+			"ImportPath": "github.com/ozym/dmc",
+			"Rev": "6afeeb708cd2793bbea67bed0cc666f82c4440bc"
+		},
+		{
+			"ImportPath": "github.com/ozym/qdp",
+			"Rev": "768ba4127c527fbbf82351d90ba27ee78d11bf39"
+		},
+		{
+			"ImportPath": "github.com/ozym/zone",
+			"Rev": "98995c0f0ffa1bdd5d3c48e1a8532352a6a210c6"
+		},
+		{
+			"ImportPath": "github.com/paulstuart/ping",
+			"Rev": "0345a9703e43995c48c1749fda54272132d57324"
+		},
+		{
+			"ImportPath": "github.com/soniah/gosnmp",
+			"Comment": "v1.9-memory-24-geffa930",
+			"Rev": "effa930c87bcdfc1f528f1fea557ad3b9210ab78"
+		},
+		{
+			"ImportPath": "github.com/tbruyelle/hipchat-go/hipchat",
+			"Comment": "v1.0-18-g3692079",
+			"Rev": "3692079af71c8cf7abe0b07ec4ddb35115971371"
+		},
+		{
+			"ImportPath": "golang.org/x/net/html",
+			"Rev": "b4e17d61b15679caf2335da776c614169a1b4643"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "49c95bdc21843256fb6c4e0d370a05f24a0bf213"
+		}
+	]
+}
