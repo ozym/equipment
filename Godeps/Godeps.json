@@ -17,11 +17,6 @@
 			"Rev": "3ad29d1ad1c4f2023e355603324348cf1f4b2d48"
 		},
 		{
-			"ImportPath": "github.com/hashicorp/consul/api",
-			"Comment": "v0.5.2-269-g80d26f9",
-			"Rev": "80d26f91568da2024ab734d50d5d0e85bc0f2147"
-		},
-		{
 			"ImportPath": "github.com/miekg/dns",
 			"Rev": "e59f851c912767b1db587dcabee6e6652e495c75"
 		},
@@ -54,10 +49,6 @@
 		{
 			"ImportPath": "golang.org/x/net/html",
 			"Rev": "b4e17d61b15679caf2335da776c614169a1b4643"
-		},
-		{
-			"ImportPath": "gopkg.in/yaml.v2",
-			"Rev": "49c95bdc21843256fb6c4e0d370a05f24a0bf213"
 		}
 	]
 }
