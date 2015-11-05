@@ -37,10 +37,10 @@ func status(args []string) {
 	}
 
 	var master string
-	flag.StringVar(&master, "master", "rhubarb.geonet.org.nz.", "default master for equipment service lookup")
+	f.StringVar(&master, "master", "rhubarb.geonet.org.nz.", "default master for equipment service lookup")
 
 	var lookup string
-	flag.StringVar(&lookup, "zone", "wan.geonet.org.nz.", "default zone for equipment service lookup")
+	f.StringVar(&lookup, "zone", "wan.geonet.org.nz.", "default zone for equipment service lookup")
 
 	var timeout time.Duration
 	f.DurationVar(&timeout, "timeout", time.Second*10, "provide a service timeout")

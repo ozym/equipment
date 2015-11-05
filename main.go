@@ -156,8 +156,10 @@ func main() {
 		fmt.Fprintf(os.Stderr, "\n")
 		fmt.Fprintf(os.Stderr, "Commands:\n")
 		fmt.Fprintf(os.Stderr, "\n")
-		fmt.Fprintf(os.Stderr, "  check  -- check for new equipment tagged as uninstalled\n")
-		fmt.Fprintf(os.Stderr, "  status -- check existing equipment for state changes\n")
+		fmt.Fprintf(os.Stderr, "  check    -- check for new equipment tagged as uninstalled\n")
+		fmt.Fprintf(os.Stderr, "  status   -- check existing equipment for state changes\n")
+		fmt.Fprintf(os.Stderr, "  template -- apply go template using yaml equipment file as source\n")
+		fmt.Fprintf(os.Stderr, "  load     -- load yaml equipment files into consul\n")
 		fmt.Fprintf(os.Stderr, "\n")
 		fmt.Fprintf(os.Stderr, "Use: \"%s <command> --help\" for more information about a specific command\n", os.Args[0])
 		fmt.Fprintf(os.Stderr, "\n")
@@ -177,6 +179,10 @@ func main() {
 		check(args[1:])
 	case "status":
 		status(args[1:])
+	case "load":
+		load(args[1:])
+	case "template":
+		plate(args[1:])
 	default:
 		flag.Usage()
 
