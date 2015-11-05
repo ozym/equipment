@@ -76,6 +76,9 @@ func plate(args []string) {
 	var input string
 	f.StringVar(&input, "input", "", "default input directory")
 
+	var strip int
+	f.IntVar(&strip, "strip", 0, "number directories to strip from input if given")
+
 	var output string
 	f.StringVar(&output, "output", "/tmp", "default output directory")
 
@@ -103,14 +106,22 @@ func plate(args []string) {
 	}
 
 	if input != "" {
+		var base string
+
+		parts := strings.SplitAfter(filepath.Clean(input), "/")
+		switch {
+		case strip < 0 && (len(parts)+strip) > 0:
+			base = filepath.Join(parts[len(parts)+strip : len(parts)]...)
+		case strip > 0 && (len(parts)-strip) > 0:
+			base = filepath.Join(parts[0 : len(parts)-strip+1]...)
+		}
+
 		err := filepath.Walk(input, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
 			if !info.IsDir() {
-				var outfile string
-				if strings.HasSuffix(input, "/") {
-					outfile = output + "/" + strings.TrimPrefix(path, input)
-				} else {
-					outfile = output + "/" + filepath.Base(input) + "/" + strings.TrimPrefix(path, input)
-				}
+				outfile := filepath.Join(output, base, strings.TrimPrefix(filepath.Clean(path), filepath.Clean(input)))
 				if err := execute(path, outfile, places); err != nil {
 					return err
 				}
